@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "modern-data-plateform"
+version = "0.1.0"
+description = "modern data plateform project which is a showcase"
+authors = ["saccleme <38853428+saccleme@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "=3.12.6"
+dbt-core = "^1.8.7"
+polars = "^1.8.2"
+duckdb = "^1.1.1"
+dagster = "^1.8.9"
+dbt-trino = "^1.8.2"
+dlt = "^1.1.0"
+dagster-webserver = "^1.8.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
