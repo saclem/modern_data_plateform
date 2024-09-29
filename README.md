@@ -1,5 +1,4 @@
-Modern Data Platform
-
+# Modern Data Platform 
 This repository contains the setup for a modern data platform leveraging various open-source tools such as Trino, PostgreSQL, MinIO, Metabase,Dagster and more, orchestrated through Docker Compose.
 Architecture Overview
 
@@ -8,7 +7,18 @@ Architecture Overview
 ![Architecture Diagram](./img/Architecture_OpenLakeHouse.png)
 
 
-The platform is designed with the following components:
+## How to Start the Project
+
+To start the entire platform, run:
+```bash
+docker-compose up -d
+```
+To stop the platform and remove the containers, run:
+```bash
+docker-compose down
+```
+
+## The platform is designed with the following components:
 
     ETL (Extract, Transform, Load):
         Uses Python, polars, DuckDB, and dlt for data extraction, transformation, and loading.
@@ -27,14 +37,59 @@ The platform is designed with the following components:
     Orchestration:
         Dagster handles workflow orchestration, ensuring the ETL processes are run in a timely and reliable manner.
 
-Getting Started
+## Getting Started
 Prerequisites
 
     Docker
     Docker Compose
 
 Ensure both Docker and Docker Compose are installed on your machine.
-Architecture
+
+
+## Debugging the Logs
+
+If you need to debug any of the services, you can use the docker-compose logs command to view the logs of specific services.
+View Logs for a Specific Service
+
+To view logs for a particular service (replace <service-name> with the actual service name):
+
+
+```bash
+  docker-compose logs <service-name>
+```
+For example, to view the logs for the PostgreSQL service:
+
+```bash
+docker-compose logs postgres
+```
+Real-time Logs (Follow Mode)
+
+If you want to follow the logs in real time (similar to tailing logs), use the -f option:
+```bash
+docker-compose logs -f <service-name>
+```
+
+
+For example, to follow the logs of the trino-coordinator service:
+
+bash
+
+docker-compose logs -f trino-coordinator
+
+### Service Names:
+
+    trino-coordinator
+    catalog
+    postgres
+    pgadmin
+    minio
+    mc
+    metabase
+
+
+
+
+## Architecture
 
 This project is containerized using Docker and orchestrated via Docker Compose. Here is the architecture breakdown:
 
@@ -45,7 +100,7 @@ This project is containerized using Docker and orchestrated via Docker Compose. 
     PgAdmin: A PostgreSQL management tool.
     Iceberg Catalog: A REST catalog service for managing MinIO metadata.
 
-Services
+## Services
 
 Here’s an overview of the services defined in docker-compose.yml:
 
@@ -76,15 +131,7 @@ Here’s an overview of the services defined in docker-compose.yml:
     MinIO Client (mc):
         Used to set up and configure the MinIO storage buckets.
 
-Running the Project
-
-To start the entire platform, run:
-
-bash
-
-docker-compose up
-
-This will spin up all the services required for the platform. Depending on your machine, the first startup might take a few minutes as Docker downloads the necessary images.
+All the services required for the platform. Depending on your machine, the first startup might take a few minutes as Docker downloads the necessary images.
 Accessing the Services
 
     Trino Web UI:
@@ -124,16 +171,9 @@ x-common-environment: &common-environment
   AWS_SECRET_ACCESS_KEY: password
   AWS_REGION: us-east-1
 
-Stopping the Project
 
-To stop and remove the containers, run:
 
-bash
-
-docker-compose down
-
-This will stop all services and remove any containers created.
-Future Improvements
+Future Improvements:
     
     Integrate ETL
     Integrate Dagster for orchestration of the ETL processes.
