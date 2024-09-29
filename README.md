@@ -8,6 +8,7 @@ Architecture Overview
 
 
 ## How to Start the Project
+Ensure both Docker and Docker Compose are installed on your machine.
 
 To start the entire platform, run:
 ```bash
@@ -37,13 +38,8 @@ docker-compose down
     Orchestration:
         Dagster handles workflow orchestration, ensuring the ETL processes are run in a timely and reliable manner.
 
-## Getting Started
-Prerequisites
 
-    Docker
-    Docker Compose
 
-Ensure both Docker and Docker Compose are installed on your machine.
 
 
 ## Debugging the Logs
