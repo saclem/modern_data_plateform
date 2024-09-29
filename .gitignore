@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+.venv2/
+env/
+
+# Poetry files (keep the lock file versioned)
+# .poetry.lock (remove this if you want to version the poetry.lock file)
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# PyCharm settings (if using PyCharm)
+.idea/
+
+# VS Code settings (if using VS Code)
+.vscode/
+
+# Docker-related files
+*.log
+docker-compose.override.yml
