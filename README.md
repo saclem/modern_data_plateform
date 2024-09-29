@@ -10,6 +10,10 @@ Architecture Overview
 ## How to Start the Project
 Ensure both Docker and Docker Compose are installed on your machine.
 
+```bash
+cd docker
+```
+
 To start the entire platform, run:
 ```bash
 docker-compose up -d
