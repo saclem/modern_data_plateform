@@ -12,8 +12,9 @@ polars = "^1.8.2"
 duckdb = "^1.1.1"
 dagster = "^1.8.9"
 dbt-trino = "^1.8.2"
-dlt = "^1.1.0"
+dlt = {extras = ["filesystem"], version = "^1.1.0"}
 dagster-webserver = "^1.8.9"
+s3fs = "^2024.9.0"
 
 
 [build-system]
