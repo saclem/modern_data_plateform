@@ -1,9 +1,9 @@
-import dlt
-import requests
 import os
+import requests
 import shutil
+import boto3
+from botocore.exceptions import NoCredentialsError
 
-# IMDb dataset URLs
 IMDB_DATASETS = {
     "name_basics": "https://datasets.imdbws.com/name.basics.tsv.gz",
     "title_akas": "https://datasets.imdbws.com/title.akas.tsv.gz",
@@ -14,70 +14,54 @@ IMDB_DATASETS = {
     "title_ratings": "https://datasets.imdbws.com/title.ratings.tsv.gz"
 }
 
-# Directory where the temp files will be downloaded
 TEMP_DIR = "./temp_dl"
 
-# Ensure the temp directory exists
+MINIO_BUCKET = "imdb"
+MINIO_ACCESS_KEY = "admin"
+MINIO_SECRET_KEY = "password"
+MINIO_ENDPOINT_URL = "http://localhost:9000"
+
 os.makedirs(TEMP_DIR, exist_ok=True)
 
+s3_client = boto3.client('s3',
+                         aws_access_key_id=MINIO_ACCESS_KEY,
+                         aws_secret_access_key=MINIO_SECRET_KEY,
+                         endpoint_url=MINIO_ENDPOINT_URL)
 
-# Function to download IMDb file and save locally to the custom temp directory
+
 def download_imdb_file(url: str, file_name: str):
     """Download IMDb file from the URL and save it in the project temp directory."""
     file_path = os.path.join(TEMP_DIR, file_name)
 
-    # Download file and save it to the temp directory
     response = requests.get(url, stream=True)
-    response.raise_for_status()  # Ensure the request was successful
+    response.raise_for_status()
 
     with open(file_path, 'wb') as file:
         for chunk in response.iter_content(chunk_size=8192):
             file.write(chunk)
 
+    print(f"Downloaded {file_name} to {file_path}")
     return file_path
 
 
-# DLT resource to yield IMDb data from local temp directory
-@dlt.resource(name="imdb_data", write_disposition="replace")
-def my_filesystem_pipeline_imdb():
-    """Yield IMDb data from local temp directory after download."""
-    for dataset_name in IMDB_DATASETS.keys():
-        # Locate the file in the temp directory
+# Function to upload file to MinIO
+def upload_to_minio(file_path, file_name):
+    """Upload a file to the specified MinIO bucket."""
+    try:
+        s3_client.upload_file(file_path, MINIO_BUCKET, file_name)
+        print(f"Uploaded {file_name} to MinIO bucket {MINIO_BUCKET}")
+    except FileNotFoundError:
+        print(f"File {file_name} not found for upload.")
+    except NoCredentialsError:
+        print("Credentials not available for MinIO")
+
+
+def process_files():
+    """Download file & upload file to minio"""
+    for dataset_name, url in IMDB_DATASETS.items():
         file_name = f"{dataset_name}.tsv.gz"
-        local_file_path = os.path.join(TEMP_DIR, file_name)
-
-        # Check if the file exists in the temp directory
-        if os.path.exists(local_file_path):
-            # Yield the file's path (for loading to MinIO or other destinations)
-            yield {"file_name": file_name, "local_file_path": local_file_path}
-        else:
-            print(f"File {file_name} not found in {TEMP_DIR}.")
-
-
-# Source function to combine all IMDb resources
-@dlt.source(name="imdb_pipeline_source")
-def my_filesystem_pipeline_source():
-    """Group all IMDb data into one source."""
-    return my_filesystem_pipeline_imdb()
-
-
-def load_stuff() -> None:
-    # Specify the pipeline name, destination and dataset name when configuring pipeline
-    p = dlt.pipeline(
-        pipeline_name='my_filesystem_pipeline',
-        destination='filesystem',
-        dataset_name='imdb_data',
-        progress="log"
-    )
-
-    # Run the pipeline to load data from the local temp files to MinIO
-    load_info = p.run(my_filesystem_pipeline_source())
-
-    # Pretty print the information on data that was loaded
-    print(load_info)  # noqa: T201
-
-    # Cleanup the temp directory after successful load
-    cleanup_temp_files()
+        local_file_path = download_imdb_file(url, file_name)
+        upload_to_minio(local_file_path, file_name)
 
 
 def cleanup_temp_files():
@@ -88,4 +72,5 @@ def cleanup_temp_files():
 
 
 if __name__ == "__main__":
-    load_stuff()
+    process_files()
+    cleanup_temp_files()
