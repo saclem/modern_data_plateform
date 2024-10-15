@@ -1,0 +1,12 @@
+trino_dbt_profile:
+  target: dev
+  outputs:
+    dev:
+      type: trino
+      method: none
+      host: trino-coordinator
+      port: 8080
+      user: admin
+      catalog: iceberg
+      schema: bronze
+      http_scheme: http
