@@ -4,9 +4,9 @@ trino_dbt_profile:
     dev:
       type: trino
       method: none
-      host: trino-coordinator
+      host: localhost
       port: 8080
       user: admin
-      catalog: iceberg
-      schema: bronze
-      http_scheme: http
+      database: iceberg
+      schema: bronze    # Change this if you're running a different schema
+      threads: 4

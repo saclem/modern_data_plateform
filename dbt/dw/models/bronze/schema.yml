@@ -1,0 +1,61 @@
+version: 2
+
+sources:
+  - name: warehouse
+    schema: bronze
+    tables:
+      - name: name_basics
+        description: "Basic information about people in the film industry"
+        external:
+          location: "s3://imdb/name_basics.tsv.gz"
+          format: csv
+          csv_delimiter: "\t"
+          csv_header: true
+
+      - name: title_akas
+        description: "Alternate titles for movies"
+        external:
+          location: "s3://imdb/title_akas.tsv.gz"
+          format: csv
+          csv_delimiter: "\t"
+          csv_header: true
+
+      - name: title_basics
+        description: "Basic information about films"
+        external:
+          location: "s3://imdb/title_basics.tsv.gz"
+          format: csv
+          csv_delimiter: "\t"
+          csv_header: true
+
+      - name: title_crew
+        description: "Crew members involved in films"
+        external:
+          location: "s3://imdb/title_crew.tsv.gz"
+          format: csv
+          csv_delimiter: "\t"
+          csv_header: true
+
+      - name: title_episode
+        description: "Information about episodes of TV series"
+        external:
+          location: "s3://imdb/title_episode.tsv.gz"
+          format: csv
+          csv_delimiter: "\t"
+          csv_header: true
+
+      - name: title_principals
+        description: "Information about principal cast members"
+        external:
+          location: "s3://imdb/title_principals.tsv.gz"
+          format: csv
+          csv_delimiter: "\t"
+          csv_header: true
+
+      - name: title_ratings
+        description: "IMDb ratings for movies and TV shows"
+        external:
+          location: "s3://imdb/title_ratings.tsv.gz"
+          format: csv
+          csv_delimiter: "\t"
+          csv_header: true

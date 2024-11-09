@@ -16,7 +16,7 @@ IMDB_DATASETS = {
 
 TEMP_DIR = "./temp_dl"
 
-MINIO_BUCKET = "imdb"
+MINIO_BUCKET = "warehouse"
 MINIO_ACCESS_KEY = "admin"
 MINIO_SECRET_KEY = "password"
 MINIO_ENDPOINT_URL = "http://localhost:9000"

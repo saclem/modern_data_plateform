@@ -31,10 +31,13 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 # Define the models structure for the Medallion architecture
 models:
-  imdb_project:
+  dw:
     bronze:
       schema: 'bronze'
+      materialized: 'table'
     silver:
       schema: 'silver'
+      materialized: 'table'
     gold:
       schema: 'gold'
+      materialized: 'table'

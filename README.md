@@ -4,7 +4,7 @@ Architecture Overview
 
 ## Architecture Overview
 
-![Architecture Diagram](./img/Architecture_OpenLakeHouse.png)
+![Architecture Diagram](./img/archi_refactored.png)
 
 
 ## How to Start the Project
